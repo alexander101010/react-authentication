@@ -63,9 +63,11 @@ const AuthForm = () => {
         }
       })
       .then((data) => {
-        authCtx.login(data.idToken);
+        const expirationTime = new Date(
+          new Date().getTime() + +data.expiresIn * 1000
+        );
+        authCtx.login(data.idToken, expirationTime.toISOString());
         history.replace('/'); // user can't use back button to go back to previous page
-        // console.log(data);
       })
       .catch((err) => {
         alert(err.message);
